@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#234240">
+<title>Panel Ejecutivo de Proyectos</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+  <!-- Pantalla de carga -->
+  <div class="loader" id="loader">
+    <div class="loader__spin"></div>
+    <div class="loader__text" id="loader-text">Cargando proyectos y ubicaciones…</div>
+  </div>
+
+  <!-- Barra superior -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <div class="topbar__mark"></div>
+      <div>
+        <div class="topbar__title">Panel de proyectos</div>
+        <div class="topbar__subtitle">Seguimiento ejecutivo</div>
+      </div>
+    </div>
+    <div class="topbar__search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar proyecto, socio o ubicación">
+    </div>
+    <button class="topbar__filterbtn" id="filter-btn">
+      Filtros <span class="count" id="filter-count" style="display:none;">0</span>
+    </button>
+  </header>
+
+  <div class="app">
+    <main class="main">
+
+      <!-- Resumen: KPIs + analítica -->
+      <div class="tabgroup is-active" id="group-resumen">
+        <div class="kpis" id="kpis"></div>
+
+        <div class="section-grid">
+          <section class="section">
+            <div class="section__head">
+              <span class="section__title">Distribución por grupo de atención</span>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-grupo"></canvas></div>
+          </section>
+          <section class="section">
+            <div class="section__head">
+              <span class="section__title">Proyectos por tecnología</span>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-tecnologia"></canvas></div>
+          </section>
+        </div>
+
+        <section class="section">
+          <div class="section__head">
+            <span class="section__title">Ranking de avance global</span>
+            <span class="section__hint">Top 6</span>
+          </div>
+          <ul class="ranking" id="ranking"></ul>
+        </section>
+      </div>
+
+      <!-- Mapa -->
+      <div class="tabgroup" id="group-mapa">
+        <div class="map-heading">
+          <span class="section__title">Ubicación geográfica de proyectos</span>
+          <span class="section__hint">Fuente: KML vinculado por nombre de proyecto</span>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span><span class="dot dot--a"></span>En orden</span>
+          <span><span class="dot dot--b"></span>Seguimiento</span>
+          <span><span class="dot dot--c"></span>Riesgo</span>
+        </div>
+        <div class="map-empty" id="map-empty" style="display:none;"></div>
+      </div>
+
+      <!-- Listado de proyectos -->
+      <div class="tabgroup" id="group-proyectos">
+        <div class="list-toolbar">
+          <span class="list-toolbar__count" id="list-count"></span>
+        </div>
+        <div class="project-list" id="project-list"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Barra de pestañas (solo móvil) -->
+  <nav class="tabbar">
+    <button class="tabbar__btn is-active" data-tab="resumen">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+      Resumen
+    </button>
+    <button class="tabbar__btn" data-tab="mapa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 20l-6-2.5V4.5L9 7l6-2.5 6 2.5v13l-6-2.5-6 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 7v13M15 4.5v13" stroke="currentColor" stroke-width="1.8"/></svg>
+      Mapa
+    </button>
+    <button class="tabbar__btn" data-tab="proyectos">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Proyectos
+    </button>
+  </nav>
+
+  <!-- Hoja de filtros -->
+  <div class="filters" id="filters">
+    <div class="filters__scrim"></div>
+    <div class="filters__panel">
+      <div class="filters__head">
+        <span class="filters__title">Filtros</span>
+        <button class="filters__clear" id="filter-clear">Limpiar todo</button>
+      </div>
+      <div class="filters__body" id="filter-options"></div>
+      <div class="filters__foot">
+        <button class="filters__apply" id="filter-apply">Ver resultados</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de detalle -->
+  <div class="detail" id="detail">
+    <div class="detail__scrim"></div>
+    <div class="detail__panel" id="detail-body"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+  <script src="assets/js/kml-parser.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/map.js"></script>
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/filters.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
