@@ -143,13 +143,13 @@
       // después de la primera pintura).
       setTimeout(() => window.AppMap.refit(), 100);
 
-      if (warnings.length) {
-        console.warn("Avisos de vinculación JSON ↔ KML:\n" + warnings.join("\n"));
-        window.AppUI.showToast(
-          "toast",
-          `${warnings.length} proyecto(s) sin vínculo geográfico exacto. Ver consola para detalle.`
-        );
-      }
+//      if (warnings.length) {
+//        console.warn("Avisos de vinculación JSON ↔ KML:\n" + warnings.join("\n"));
+//        window.AppUI.showToast(
+//          "toast",
+//          `${warnings.length} proyecto(s) sin vínculo geográfico exacto. Ver consola para detalle.`
+//        );
+//      }
     } catch (err) {
       console.error(err);
       els.loaderText.textContent =
