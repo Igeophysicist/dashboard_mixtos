@@ -11,7 +11,7 @@
   // al marcador. Súbelo (p. ej. 10) si quieres que los nombres aparezcan
   // solo con más zoom (menos abarrotado); bájalo (p. ej. 6) para que
   // aparezcan antes. Valores típicos de Leaflet: 0 (mundo) a ~18 (calle).
-  const LABEL_MIN_ZOOM = 7;
+  const LABEL_MIN_ZOOM = 8;
 
   // Caja que cubre aproximadamente todo México (suroeste y noreste).
   // Se usa como "mínimo" al encuadrar el mapa: la vista inicial (y cada
@@ -126,6 +126,24 @@
       layer.on("click", () => onMarkerSelect(project.id));
       layer.addTo(layerGroup);
       markersById.set(project.id, layer);
+
+      // Geometrías adicionales del mismo proyecto (p. ej. un polígono de
+      // referencia vinculado por nombre desde otro KML, ver data.js:
+      // KML_SOURCES). Se dibujan con el mismo color/clic que el marcador
+      // principal, pero sin etiqueta propia para no duplicar el nombre.
+      (project.geoAreas || []).forEach((area) => {
+        let areaLayer;
+        if (area.type === "polygon") {
+          areaLayer = L.polygon(area.latlngs, { color, weight: 2, fillColor: color, fillOpacity: 0.18 });
+        } else if (area.type === "line") {
+          areaLayer = L.polyline(area.latlngs, { color, weight: 3, dashArray: "4 3" });
+        }
+        if (!areaLayer) return;
+        areaLayer.bindPopup(popupHtml(project), { closeButton: true });
+        areaLayer.on("click", () => onMarkerSelect(project.id));
+        areaLayer.addTo(layerGroup);
+        area.latlngs.forEach((p) => bounds.push(p));
+      });
     });
 
     // Encuadre: siempre incluye al menos todo México, y se amplía para

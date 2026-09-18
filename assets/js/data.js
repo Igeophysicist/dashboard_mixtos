@@ -21,7 +21,14 @@ const DATA_SOURCES = {
   json: "data/dataparsedprueba.json",
 };
 
-const KML_SOURCES = ["data/ENTRADA_PROYECTOS.kml"];
+const KML_SOURCES = [
+  "data/ENTRADA_PROYECTOS.kml", "data/AREAS_REFERENCIA.kml",
+  // Para agregar una capa KML adicional (p. ej. polígonos de referencia
+  // por proyecto), solo súmala aquí. Si sus Placemark usan el mismo
+  // <name> que un proyecto, se vincula automáticamente y se dibuja junto
+  // al punto de ese proyecto (ver "geoAreas" más abajo).
+  // "data/OTRA_CAPA.kml",
+];
 
 const GRUPO_INFO = {
   A: { label: "En orden", short: "A", css: "a", color: "#1e7a52" },
@@ -81,7 +88,13 @@ async function fetchText(url) {
   return res.text();
 }
 
-/** Construye un índice normalizado nombre -> placemark a partir de varios KML */
+/**
+ * Construye un índice normalizado nombre -> [placemarks] a partir de
+ * varios KML. Un mismo nombre de proyecto puede tener MÁS DE UN
+ * placemark si aparece en distintos archivos KML — típicamente un punto
+ * (ubicación) en uno y un polígono (área de referencia) en otro. Por eso
+ * el índice guarda un arreglo por nombre en vez de un solo placemark.
+ */
 async function buildGeoIndex(kmlUrls) {
   const index = new Map();
   const warnings = [];
@@ -98,10 +111,15 @@ async function buildGeoIndex(kmlUrls) {
     placemarks.forEach((pm) => {
       const key = normalizeName(pm.name);
       if (!key) return;
-      if (index.has(key)) {
-        warnings.push(`Nombre de proyecto duplicado en KML: "${pm.name}"`);
+      const existing = index.get(key) || [];
+      // Solo se avisa si hay dos geometrías del MISMO tipo con el mismo
+      // nombre (eso sí es un duplicado real y ambiguo). Un punto + un
+      // polígono compartiendo nombre es el caso esperado, no un error.
+      if (existing.some((p) => p.type === pm.type)) {
+        warnings.push(`Geometría "${pm.type}" duplicada en KML para "${pm.name}".`);
       }
-      index.set(key, pm);
+      existing.push(pm);
+      index.set(key, existing);
     });
   }
 
@@ -120,9 +138,17 @@ async function loadDataset() {
     const raw = rawProjects[id];
     const nombre = raw["TÍTULO 2"] || raw["TÍTULO 1"] || `Proyecto ${id}`;
     const key = normalizeName(nombre) || normalizeName(raw["TÍTULO 1"]);
-    const placemark = geo.index.get(key);
+    const matches = geo.index.get(key) || [];
 
-    if (!placemark) {
+    // Geometría principal: preferimos el punto (marcador + etiqueta del
+    // nombre); si el proyecto solo tiene un polígono, ese se usa como
+    // principal. El resto de geometrías (p. ej. un polígono adicional
+    // de referencia) se guarda aparte en "geoAreas" y se dibuja también
+    // en el mapa, pero sin duplicar el marcador/etiqueta principal.
+    const primary = matches.find((m) => m.type === "point") || matches[0] || null;
+    const areas = matches.filter((m) => m !== primary);
+
+    if (!primary) {
       warnings.push(`Sin geometría en KML para el proyecto "${nombre}".`);
     }
 
@@ -152,9 +178,10 @@ async function loadDataset() {
       global: raw["Global"] || "",
       globalPct: parsePercent(raw["Global"]),
       grupo: raw["Grupo de atención"] || "",
-      geo: placemark
-        ? { type: placemark.type, latlngs: placemark.latlngs, folderPath: placemark.folderPath }
+      geo: primary
+        ? { type: primary.type, latlngs: primary.latlngs, folderPath: primary.folderPath }
         : null,
+      geoAreas: areas.map((a) => ({ type: a.type, latlngs: a.latlngs, folderPath: a.folderPath })),
     };
   });
 
