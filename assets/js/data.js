@@ -18,7 +18,7 @@
  */
 
 const DATA_SOURCES = {
-  json: "data/dataparsedprueba.json",
+  json: "data/DATOS_MIXTOS.json",
 };
 
 const KML_SOURCES = [
