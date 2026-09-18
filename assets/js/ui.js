@@ -136,7 +136,7 @@
       ["inicioConstruccion", "Inicio de construcción"], ["finConstruccion", "COD"], ["firmaContrato", "Firma de contrato"],
     ]},
     { section: "Financiero", items: [
-      ["capex", "CAPEX"],
+      ["capex", "CAPEX (USD)"],
     ]},
   ];
 
