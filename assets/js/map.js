@@ -11,7 +11,7 @@
   // al marcador. Súbelo (p. ej. 10) si quieres que los nombres aparezcan
   // solo con más zoom (menos abarrotado); bájalo (p. ej. 6) para que
   // aparezcan antes. Valores típicos de Leaflet: 0 (mundo) a ~18 (calle).
-  const LABEL_MIN_ZOOM = 8;
+  const LABEL_MIN_ZOOM = 7;
 
   // Caja que cubre aproximadamente todo México (suroeste y noreste).
   // Se usa como "mínimo" al encuadrar el mapa: la vista inicial (y cada
