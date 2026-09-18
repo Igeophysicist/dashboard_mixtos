@@ -40,21 +40,6 @@
   <div class="app">
     <main class="main">
 
-      <!-- Mapa -->
-      <div class="tabgroup" id="group-mapa">
-        <div class="map-heading">
-          <span class="section__title">Ubicación geográfica de proyectos</span>
-          <span class="section__hint">Fuente: KML vinculado por nombre de proyecto</span>
-        </div>
-        <div id="map"></div>
-        <div class="map-legend">
-          <span><span class="dot dot--a"></span>En orden</span>
-          <span><span class="dot dot--b"></span>Seguimiento</span>
-          <span><span class="dot dot--c"></span>Riesgo</span>
-        </div>
-        <div class="map-empty" id="map-empty" style="display:none;"></div>
-      </div>
-
       <!-- Resumen: KPIs + analítica -->
       <div class="tabgroup" id="group-resumen">
         <div class="kpis" id="kpis"></div>
@@ -83,6 +68,21 @@
         </section>
       </div>
 
+      <!-- Mapa -->
+      <div class="tabgroup" id="group-mapa">
+        <div class="map-heading">
+          <span class="section__title">Ubicación geográfica de proyectos</span>
+          <span class="section__hint">Fuente: KML vinculado por nombre de proyecto</span>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span><span class="dot dot--a"></span>En orden</span>
+          <span><span class="dot dot--b"></span>Seguimiento</span>
+          <span><span class="dot dot--c"></span>Riesgo</span>
+        </div>
+        <div class="map-empty" id="map-empty" style="display:none;"></div>
+      </div>
+
       <!-- Listado de proyectos -->
       <div class="tabgroup is-active" id="group-proyectos">
         <div class="list-toolbar">
@@ -103,11 +103,12 @@
     <button class="tabbar__btn" data-tab="mapa">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 20l-6-2.5V4.5L9 7l6-2.5 6 2.5v13l-6-2.5-6 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 7v13M15 4.5v13" stroke="currentColor" stroke-width="1.8"/></svg>
       Mapa
-    </button><button class="tabbar__btn" data-tab="resumen">
+    </button>
+    <button class="tabbar__btn" data-tab="resumen">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
       Resumen
     </button>
-  </nav>
+</nav>
 
   <!-- Hoja de filtros -->
   <div class="filters" id="filters">
@@ -134,6 +135,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
   <script src="assets/js/kml-parser.js"></script>
   <script src="assets/js/data.js"></script>

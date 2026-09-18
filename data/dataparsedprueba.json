@@ -1,0 +1,42 @@
+{
+    "0":{
+        "NO.":"1",
+        "TÍTULO 1":"SAN PEDRO SOLAR",
+        "TÍTULO 2":"SAN PEDRO SOLAR",
+        "Socio":"Socio Demo A",
+        "Tecnología":"Solar FV",
+        "Ubicación":"Querétaro",
+        "Capacidad":"180 MW",
+        "Almacenamiento (BESS)":"Sí",
+        "Horas de Almacenamiento":11.11,
+        "Inicio de Construcción":"2024-03-01",
+        "Fin de Construcción":"2026-01-15",
+        "Fecha firma de contrato":"2023-11-20",
+        "CAPEX":"$11,000,000.00",
+        "Avance en trámties y\/o permisos":"str",
+        "Parque":"92%",
+        "LT":"40%",
+        "Global":"81.6%",
+        "Grupo de atención":"A"
+    },
+    "1":{
+        "NO.":"2",
+        "TÍTULO 1":"SUNORA",
+        "TÍTULO 2":"SUNORA",
+        "Socio":"Socio Demo B",
+        "Tecnología":"Solar FV",
+        "Ubicación":"Hermosillo",
+        "Capacidad":"95 MW",
+        "Almacenamiento (BESS)":"No",
+        "Horas de Almacenamiento":0,
+        "Inicio de Construcción":"2024-06-10",
+        "Fin de Construcción":"2025-12-01",
+        "Fecha firma de contrato":"2024-01-05",
+        "CAPEX":"$6,500,000.00",
+        "Avance en trámties y\/o permisos":"str",
+        "Parque":"50.75%",
+        "LT":"40.5%",
+        "Global":"48.7%",
+        "Grupo de atención":"C"
+    }
+}
