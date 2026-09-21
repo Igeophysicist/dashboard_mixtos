@@ -95,36 +95,40 @@
   }
 
   function wireEvents() {
-    els.search.addEventListener("input", (e) => {
-      window.AppFilters.setSearch(e.target.value);
-      render();
-    });
+  els.search.addEventListener("input", (e) => {
+    window.AppFilters.setSearch(e.target.value);
+    render();
+  });
 
-    els.filterBtn.addEventListener("click", openFilters);
-    els.filters.querySelector(".filters__scrim").addEventListener("click", closeFilters);
-    els.filterApply.addEventListener("click", closeFilters);
-    els.filterClear.addEventListener("click", () => {
-      window.AppFilters.clearAll();
-      els.search.value = "";
-      openFilters();
-      render();
-    });
+  els.filterBtn.addEventListener("click", openFilters);
+  els.filters.querySelector(".filters__scrim").addEventListener("click", closeFilters);
+  els.filterApply.addEventListener("click", closeFilters);
+  els.filterClear.addEventListener("click", () => {
+    window.AppFilters.clearAll();
+    els.search.value = "";
+    openFilters();
+    render();
+  });
 
-    els.detail.querySelector(".detail__scrim").addEventListener("click", closeDetail);
-    els.detailBody.addEventListener("click", (e) => {
-      if (e.target.matches("[data-close-detail]")) closeDetail();
-    });
-    document.addEventListener("click", (e) => {
-      if (e.target.matches("[data-close-detail]")) closeDetail();
-    });
+  els.detail.querySelector(".detail__scrim").addEventListener("click", closeDetail);
+  els.detailBody.addEventListener("click", (e) => {
+    if (e.target.matches("[data-close-detail]")) closeDetail();
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target.matches("[data-close-detail]")) closeDetail();
+  });
 
-    els.tabbarBtns.forEach((btn) => {
-      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
-    });
+  els.tabbarBtns.forEach((btn) => {
+    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+  });
 
-    window.AppMap.setOnMarkerSelect(openDetail);
+  window.AppMap.setOnMarkerSelect(openDetail);
 
-    window.addEventListener("resize", () => window.AppMap.invalidateSize());
+  window.addEventListener("resize", () => window.AppMap.invalidateSize());
+
+  document.getElementById("update-banner-close").addEventListener("click", () => {
+    document.getElementById("update-banner").classList.add("is-hidden");
+  });
   }
 
   async function bootstrap() {
