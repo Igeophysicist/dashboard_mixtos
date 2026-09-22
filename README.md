@@ -12,7 +12,7 @@ ejecutivo (varios proyectos, consulta mayormente desde celular,
 necesidad de mapa) esa arquitectura no escalaba: no había manera de
 comparar proyectos, filtrar, ver el conjunto agregado ni ubicarlos en
 el mapa. Se rediseñó desde cero conservando únicamente la fuente de
-datos (`dataparsedprueba.json`) y los colores/identidad de marca
+datos (`dataparsedprueba.xlsx`) y los colores/identidad de marca
 originales (teal, oro, arena).
 
 ## Estructura de carpetas
@@ -25,16 +25,39 @@ originales (teal, oro, arena).
 │   │   └── styles.css         sistema de diseño completo
 │   └── js/
 │       ├── kml-parser.js      parser KML propio (sin dependencias)
-│       ├── data.js            carga JSON+KML, normaliza, vincula
+│       ├── data.js            carga Excel+KML, normaliza, vincula
 │       ├── map.js             mapa Leaflet
 │       ├── charts.js          gráficos Chart.js
 │       ├── filters.js         estado y lógica de filtros
 │       ├── ui.js               KPIs, tarjetas, panel de detalle
 │       └── app.js             orquestador (conecta todo)
 └── data/
-    ├── dataparsedprueba.json  fuente de datos ejecutiva (única fuente de verdad)
+    ├── dataparsedprueba.xlsx  fuente de datos ejecutiva (única fuente de verdad)
     └── ENTRADA_PROYECTOS.kml  geometrías de proyectos
 ```
+
+Los datos se leen de un archivo **Excel** (`.xlsx`) en vez de JSON: es
+más cómodo de editar para alguien sin conocimientos técnicos (como
+cualquier hoja de cálculo), y la app lo convierte a los mismos datos
+internos en el navegador con la librería
+[SheetJS](https://sheetjs.com) — sin backend ni conversión manual.
+
+### Cómo editar los datos
+
+Abre `data/dataparsedprueba.xlsx`:
+- Todo va en la hoja **"Proyectos"** — una fila por proyecto. No
+  cambies los encabezados de la fila 1 (el código los lee por nombre
+  exacto) ni renombres esa hoja.
+- La hoja **"Instrucciones"** (dentro del mismo archivo) explica el
+  formato esperado de cada columna — en particular, `Parque`/`LT`/
+  `Global` y las fechas se guardan como **texto**, no con el formato
+  de fecha/porcentaje nativo de Excel, para que se lean tal cual se
+  escriben (evita que Excel reinterprete "92%" como 9200%, o una
+  fecha según la configuración regional de quien la edite).
+- `TÍTULO 2` debe coincidir exactamente con el `<name>` del Placemark
+  en el KML para que ese proyecto aparezca en el mapa (ver
+  "Estrategia de vinculación" más abajo).
+- Guarda y publica — no hace falta build step ni conversión.
 
 Cada módulo JS es independiente y solo se comunica a través de un
 objeto global (`window.AppData`, `window.AppMap`, etc.), así que se
@@ -59,14 +82,14 @@ reescribe `map.js`.
   complejas (huecos en polígonos, `MultiGeometry` anidada), ese es el
   único archivo a extender.
 
-## Estrategia de vinculación JSON ↔ KML
+## Estrategia de vinculación Excel ↔ KML
 
-El JSON sigue siendo la única fuente de verdad para los datos
+El Excel sigue siendo la única fuente de verdad para los datos
 ejecutivos. El o los KML solo aportan geometría. La vinculación es
 automática, por nombre:
 
-1. Cada proyecto en el JSON tiene `TÍTULO 2` (con `TÍTULO 1` como
-   respaldo si el primero falta).
+1. Cada proyecto en la hoja "Proyectos" tiene `TÍTULO 2` (con
+   `TÍTULO 1` como respaldo si el primero falta).
 2. Cada `Placemark` del KML tiene `<name>`.
 3. Ambos valores se normalizan (mayúsculas, sin acentos, sin
    puntuación redundante, espacios colapsados) y se comparan.
@@ -77,14 +100,15 @@ automática, por nombre:
 
 **Esto significa que el único requisito para que un proyecto nuevo
 aparezca en el mapa es que su nombre en el KML coincida con
-`TÍTULO 2` del JSON.** No hace falta mantener un ID paralelo. Para
+`TÍTULO 2` del Excel.** No hace falta mantener un ID paralelo. Para
 agregar más archivos KML, súmalos al arreglo `KML_SOURCES` en
 `assets/js/data.js`.
 
-> Nota: el JSON de ejemplo incluido (`dataparsedprueba.json`) usa dos
+> Nota: el Excel de ejemplo incluido (`dataparsedprueba.xlsx`) usa dos
 > proyectos reales del KML (`SAN PEDRO SOLAR` y `SUNORA`) como
-> demostración funcional de la vinculación. Reemplázalo por tu JSON
-> real conservando la misma estructura de claves.
+> demostración funcional de la vinculación. Reemplaza esas filas por
+> tus proyectos reales conservando exactamente los mismos encabezados
+> de columna (ver hoja "Instrucciones" dentro del propio archivo).
 
 ## Filtros
 
@@ -114,13 +138,13 @@ nombre, socio, ubicación y tecnología.
 
 ## Actualizar datos
 
-Edita únicamente `data/dataparsedprueba.json` (y el/los KML si
-cambian ubicaciones), conservando exactamente las mismas claves.
-El resto de la aplicación no requiere cambios.
+Edita únicamente `data/dataparsedprueba.xlsx` (hoja "Proyectos") y
+el/los KML si cambian ubicaciones, conservando exactamente los mismos
+encabezados de columna. El resto de la aplicación no requiere cambios.
 
 ## Probar en local antes de publicar
 
-Como la app usa `fetch()` para cargar el JSON y el KML, **no
+Como la app usa `fetch()` para cargar el Excel y el KML, **no
 funciona abriendo `index.html` con doble clic** (bloqueo CORS de
 `file://`). Sirve la carpeta con un servidor local, por ejemplo:
 

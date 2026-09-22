@@ -96,7 +96,7 @@
 
   <!-- Barra de pestañas (solo móvil) -->
   <nav class="tabbar">
-    <button class="tabbar__btn is-active" data-tab="proyectos">
+     <button class="tabbar__btn is-active" data-tab="proyectos">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       Proyectos
     </button>
@@ -104,10 +104,11 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 20l-6-2.5V4.5L9 7l6-2.5 6 2.5v13l-6-2.5-6 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 7v13M15 4.5v13" stroke="currentColor" stroke-width="1.8"/></svg>
       Mapa
     </button>
-        <button class="tabbar__btn" data-tab="resumen">
+    <button class="tabbar__btn" data-tab="resumen">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
       Resumen
     </button>
+   
   </nav>
 
   <!-- Hoja de filtros -->
@@ -133,13 +134,15 @@
 
   <div class="toast" id="toast"></div>
   <div class="update-banner" id="update-banner">
-    <span>Actualización (21/09/26):<br>-Haab Kiin<br>-Planta Solar Cerro Colorado<br>-San Simón Solar<br>-La Noria<br>-Solitario<br>-Álvaro Obregón</span>
+    <span style="width: 100%;">Actualización (21/09/26):<br><br>-Haab Kiin<br>-Planta Solar Cerro Colorado<br>-San Simón Solar<br>-La Noria<br>-Solitario<br>-Álvaro Obregón<br><br></span>
     <button id="update-banner-close">Aceptar</button>
   </div>
-  
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <script src="assets/js/kml-parser.js"></script>
   <script src="assets/js/data.js"></script>
