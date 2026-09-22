@@ -324,6 +324,7 @@ a{color:inherit;}
   position:fixed; top:calc(12px + env(safe-area-inset-top,0px)); left:50%; transform:translateX(-50%);
   z-index:1000; background:var(--teal-800); color:#fff; padding:10px 14px; border-radius:var(--radius-m);
   box-shadow:var(--shadow-float); display:flex; align-items:center; gap:12px; font-size:13px;
+  max-width:calc(100% - 32px);
 }
 .update-banner button{
   background:var(--gold-700); color:#fff; border:0; border-radius:6px; padding:6px 12px;
