@@ -41,7 +41,7 @@
     instances[canvasId] = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: ["En orden (A)", "En seguimiento (B)", "En riesgo (C)"],
+        labels: ["(A)", "(B)", "(C)"],
         datasets: [
           {
             data: [counts.A, counts.B, counts.C],

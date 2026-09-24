@@ -43,9 +43,9 @@ const KML_SOURCES = [
 ];
 
 const GRUPO_INFO = {
-  A: { label: "En orden", short: "A", css: "a", color: "#1e7a52" },
-  B: { label: "En seguimiento", short: "B", css: "b", color: "#a3781a" },
-  C: { label: "En riesgo", short: "C", css: "c", color: "#b83b3b" },
+  A: { label: "Grupo A", short: "A", css: "a", color: "#1e7a52" },
+  B: { label: "Grupo B", short: "B", css: "b", color: "#a3781a" },
+  C: { label: "Grupo C", short: "C", css: "c", color: "#b83b3b" },
 };
 
 function normalizeName(str) {
