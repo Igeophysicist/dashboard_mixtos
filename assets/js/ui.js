@@ -48,9 +48,9 @@
         cls: "",
       },
       {
-        label: "En riesgo",
+        label: "Proyectos en Grupo C",
         value: fmtInt.format(enRiesgo),
-        meta: "Proyectos en grupo C",
+        meta: "",
         cls: "risk",
       },
     ];
@@ -176,7 +176,7 @@
   // ------------------------------------------------------------ Filtros
   function renderFilterOptions(elId, options, state, onToggle) {
     const LABELS = { tecnologia: "Tecnología", ubicacion: "Ubicación", socio: "Socio", grupo: "Grupo de atención" };
-    const GRUPO_LABELS = { A: "A · En orden", B: "B · En seguimiento", C: "C · En riesgo" };
+    const GRUPO_LABELS = { A: "Grupo A", B: "Grupo B", C: "Grupo C" };
 
     const groups = Object.keys(options).map((field) => {
       const chips = options[field]
