@@ -105,9 +105,9 @@
   function renderRanking(listId, projects, onSelect) {
     const list = document.getElementById(listId);
     const top = [...projects]
-      .filter((p) => p.globalPct !== null)
-      .sort((a, b) => b.globalPct - a.globalPct)
-      .slice(0, 6);
+      .filter((p) => p.parquePct !== null)
+      .sort((a, b) => b.parquePct - a.parquePct)
+      .slice(0, 12);
 
     if (!top.length) {
       list.innerHTML = `<li style="color:var(--ink-500); font-size:13px;">Sin datos de avance disponibles.</li>`;
@@ -120,10 +120,10 @@
       <li data-id="${p.id}">
         <span class="ranking__rank">${i + 1}</span>
         <span class="ranking__name">${p.nombre}</span>
-        <span class="ranking__bar"><span style="width:${Math.min(p.globalPct, 100)}%; background:${
+        <span class="ranking__bar"><span style="width:${Math.min(p.parquePct, 100)}%; background:${
           (GRUPO_INFO[p.grupo] || {}).color || "#2e534f"
         }"></span></span>
-        <span class="ranking__pct tabular">${p.globalPct}%</span>
+        <span class="ranking__pct tabular">${p.parquePct}%</span>
       </li>`
       )
       .join("");
